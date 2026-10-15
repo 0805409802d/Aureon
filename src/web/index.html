@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Aureon - Tutor Personal de Inteligencia Artificial e Ingeniería con pedagogías de Harvard, Stanford, Moscú y Tsinghua, servidor MCP y persistencia 100% en la nube con Supabase pgvector.">
+  <title>Aureon Cloud // AI Engineering & Math Tutor</title>
+  
+  <!-- Google Fonts: Outfit & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- KaTeX para renderizado matemático nítido de alta precisión -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+  
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Encabezado Principal de Alta Fidelidad -->
+  <header class="app-header" id="mainHeader">
+    <div class="brand-section">
+      <div class="logo-badge" id="appLogo">
+        <span class="logo-glyph">λ</span>
+      </div>
+      <div>
+        <h1 class="brand-title">AUREON <span class="brand-version">v2.1 AI CLOUD</span></h1>
+        <div class="brand-subtitle">
+          <span class="student-tag">Darlyn David</span> · I.S.T. Carlos Cisneros · Inteligencia Artificial
+        </div>
+      </div>
+    </div>
+
+    <!-- Selector de Pedagogía Universitaria (Harvard, Stanford, MGU Moscú, Tsinghua, Polytechnique) -->
+    <div class="university-pedagogy-bar">
+      <span class="pedagogy-label">Lente Pedagógico:</span>
+      <div class="university-tabs-group" id="universityTabsGroup">
+        <button class="univ-tab-btn active" data-univ="stanford" title="Stanford & MIT: Intuición de Sistemas Dinámicos y Computación">
+          <span class="flag">🇺🇸</span> Stanford
+        </button>
+        <button class="univ-tab-btn" data-univ="moscow" title="Universidad Estatal de Moscú: Rigor Analítico Escuela Landau">
+          <span class="flag">🇷🇺</span> MGU Moscú
+        </button>
+        <button class="univ-tab-btn" data-univ="tsinghua" title="Universidad Tsinghua: Precisión Algebraica Intensiva">
+          <span class="flag">🇨🇳</span> Tsinghua
+        </button>
+        <button class="univ-tab-btn" data-univ="harvard" title="Harvard: Fundamentos Axiomáticos y Estructuras">
+          <span class="flag">🇺🇸</span> Harvard
+        </button>
+        <button class="univ-tab-btn" data-univ="polytechnique" title="École Polytechnique: Geometría y Formas Diferenciales">
+          <span class="flag">🇫🇷</span> Polytechnique
+        </button>
+      </div>
+    </div>
+
+    <!-- Indicadores de Estado de Infraestructura Real (Railway, Gemini 3.1, Supabase Cloud, MCP) -->
+    <div class="header-status-cluster">
+      <div class="cloud-pill" id="railwayPill" title="Despliegue activo en Railway Cloud">
+        <span class="pulse-indicator status-green"></span>
+        <span class="pill-text">Railway</span>
+      </div>
+      <div class="cloud-pill" id="geminiPill" title="Google Gemini 3.1 / 2.5 Pro">
+        <span class="pulse-indicator status-cyan"></span>
+        <span class="pill-text">Gemini 3.1</span>
+      </div>
+      <div class="cloud-pill" id="supabasePill" title="Base de Datos Supabase PostgreSQL + pgvector (100% Cloud)">
+        <span class="pulse-indicator status-purple"></span>
+        <span class="pill-text" id="supabaseLabel">Supabase Cloud</span>
+      </div>
+      <div class="cloud-pill" id="mcpPill" title="Servidor Model Context Protocol Activo">
+        <span class="pulse-indicator status-amber"></span>
+        <span class="pill-text">MCP Protocol</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Barra de Modos de Estudio: 5 Vistas Especializadas -->
+  <nav class="mode-navigation-bar" id="modeNavBar">
+    <div class="mode-tabs">
+      <button class="mode-tab-btn active" id="tabModeUniversal" data-view="universal">
+        <span class="mode-icon">✦</span>
+        <span>Solucionador Universal IA</span>
+        <span class="badge-glow">Cualquier Ecuación</span>
+      </button>
+      <button class="mode-tab-btn" id="tabModeParametric" data-view="parametric">
+        <span class="mode-icon">⚡</span>
+        <span>Laboratorio de Ingenierías</span>
+        <span class="badge-subtle">IA · Robótica · SO · Mecánica</span>
+      </button>
+      <button class="mode-tab-btn" id="tabModePomodoro" data-view="pomodoro">
+        <span class="mode-icon">⏱️</span>
+        <span>Estudio Intensivo 10H</span>
+        <span class="badge-subtle" id="hoursBadge">0.0 / 10h</span>
+      </button>
+      <button class="mode-tab-btn" id="tabModeFlashcards" data-view="flashcards">
+        <span class="mode-icon">🗂️</span>
+        <span>Active Recall & Flashcards</span>
+        <span class="badge-subtle">SM-2 Spaced</span>
+      </button>
+      <button class="mode-tab-btn" id="tabModeMcp" data-view="mcp">
+        <span class="mode-icon">🔌</span>
+        <span>Hub MCP & Cloud</span>
+        <span class="badge-subtle">JSON-RPC</span>
+      </button>
+    </div>
+
+    <div class="active-pedagogy-summary" id="activePedagogySummary">
+      <span class="summary-flag" id="pedagogyFlag">🇺🇸</span>
+      <span class="summary-text" id="pedagogyTagline">Stanford & MIT · Intuición de Sistemas Dinámicos y Computación</span>
+    </div>
+  </nav>
+
+  <!-- Espacio de Trabajo Principal: Arquitectura de Doble Canvas Sincronizado -->
+  <main class="workspace-container">
+
+    <!-- CANVAS 1: Espacio de Trabajo Principal (Izquierdo / Ancho / Scroll Propio) -->
+    <section class="math-canvas" id="mathCanvas">
+
+      <!-- ==============================================================
+           VISTA 1: SOLUCIONADOR UNIVERSAL IA (CUALQUIER ECUACIÓN O PROBLEMA)
+           ============================================================== -->
+      <div class="view-panel active" id="universalSolverView">
+        
+        <div class="equation-hero-card">
+          <div class="hero-card-header">
+            <div class="hero-title-box">
+              <span class="hero-badge">IA Gemini 3.1 + SymPy Exacto + Supabase pgvector</span>
+              <h2 class="hero-heading">Solucionador Universal de Ecuaciones & Problemas de Ingeniería</h2>
+            </div>
+            <span class="hero-sub">Ingresa cualquier EDO, integral, matriz, gradiente de IA, cinemática robótica o fórmula física</span>
+          </div>
+
+          <!-- Barra de Entrada y Botón de Ejecución -->
+          <div class="equation-input-shell">
+            <div class="input-prefix">ƒ(x) =</div>
+            <input 
+              type="text" 
+              class="equation-input" 
+              id="universalEquationInput" 
+              placeholder="Ej: diff(y(x), x, 2) + 4*y(x) = sin(x)   o   x^3 - 6x^2 + 11x - 6 = 0"
+              value="diff(y(x), x, 2) + 4*y(x) = sin(x)"
+            />
+            <button class="btn-solve-glow" id="btnSolveUniversal">
+              <span class="solve-icon">⚡</span>
+              <span>Resolver con IA</span>
+            </button>
+          </div>
+
+          <!-- Preajustes Rápidos de Ecuaciones de Ingeniería -->
+          <div class="quick-presets-strip">
+            <span class="presets-label">Problemas Clásicos de Exámenes:</span>
+            <div class="presets-scroll">
+              <button class="preset-chip" data-eq="diff(y(x), x, 2) + 4*y(x) = sin(x)">
+                Oscilador Armónico (EDO 2°)
+              </button>
+              <button class="preset-chip" data-eq="integrate(x^2 * exp(-x), x)">
+                Integral Gamma / Energía
+              </button>
+              <button class="preset-chip" data-eq="x^3 - 6*x^2 + 11*x - 6 = 0">
+                Polinomio Cúbico de Estado
+              </button>
+              <button class="preset-chip" data-eq="diff(y(x), x) = y(x)*(1 - y(x))">
+                Ecuación Logística (Redes Neuronales)
+              </button>
+              <button class="preset-chip" data-eq="integrate(1/(x^2 + a^2), x)">
+                Antiderivada Lorentziana
+              </button>
+              <button class="preset-chip" data-eq="diff(y(x), x, 2) - 9*y(x) = 0">
+                Difusión de Señal 1D
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Renderizado de la Solución Exacta Simbólica -->
+        <div class="solution-display-card" id="universalSolutionCard">
+          <div class="solution-card-header">
+            <div>
+              <span class="card-tag">Cálculo Simbólico Exacto (0% Alucinación)</span>
+              <h3 class="solution-card-title" id="universalCardTitle">Solución Analítica Cerrada</h3>
+            </div>
+            <div class="solution-actions">
+              <button class="action-btn" id="btnCopyLatex" title="Copiar fórmula en formato LaTeX">
+                <span>📋 Copiar LaTeX</span>
+              </button>
+              <button class="action-btn" id="btnExportUniversalNotes" title="Guardar como flashcard en Supabase">
+                <span>💾 Guardar como Flashcard</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Fórmulas KaTeX -->
+          <div class="math-banner-box">
+            <div class="math-sub-label">Problema Interpretado:</div>
+            <div class="formula-render-big" id="universalInputDisplay"></div>
+            <div class="math-sub-label" style="margin-top: 14px;">Solución Determinista Calculada:</div>
+            <div class="formula-render-big solution-accent" id="universalSolutionDisplay"></div>
+          </div>
+
+          <!-- Desglose de Pasos Analíticos Universales -->
+          <div class="universal-steps-list" id="universalStepsContainer"></div>
+        </div>
+
+        <!-- Explicación Pedagógica Profunda con el Lente Universitario -->
+        <div class="university-lesson-card" id="universityLessonCard">
+          <div class="lesson-header">
+            <div class="lesson-title-cluster">
+              <span class="lesson-flag" id="lessonFlag">🇺🇸</span>
+              <div>
+                <h3 class="lesson-heading" id="lessonHeading">Análisis Pedagógico Universitario</h3>
+                <span class="lesson-sub" id="lessonSub">Grounding con Supabase pgvector y Gemini 3.1</span>
+              </div>
+            </div>
+            <button class="speaker-pill" id="btnSpeakLesson" title="Escuchar lección con síntesis de voz en español">
+              <span>🔊</span>
+              <span>Escuchar Lección</span>
+            </button>
+          </div>
+
+          <div class="lesson-body-markdown" id="lessonBodyMarkdown">
+            <div class="lesson-placeholder">
+              Presiona <strong>"Resolver con IA"</strong> para generar el análisis socrático completo y las demostraciones formales.
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ==============================================================
+           VISTA 2: LABORATORIO DE INGENIERÍAS (14 ARQUETIPOS PARAMÉTRICOS)
+           ============================================================== -->
+      <div class="view-panel" id="parametricLabView">
+        
+        <!-- Selector de Ramas de Ingeniería -->
+        <div class="area-navigation-ribbon">
+          <span class="ribbon-label">Disciplina de Ingeniería:</span>
+          <nav class="area-selector-nav" id="areaSelectorNav">
+            <button class="area-tab-btn active" data-area="ai">Inteligencia Artificial</button>
+            <button class="area-tab-btn" data-area="robotics">Robótica y Control</button>
+            <button class="area-tab-btn" data-area="os">Sistemas Operativos</button>
+            <button class="area-tab-btn" data-area="mechanics">Ingeniería Mecánica</button>
+            <button class="area-tab-btn" data-area="math_foundations">Matemáticas & Baldor</button>
+          </nav>
+        </div>
+
+        <!-- Cabecera del Arquetipo Paramétrico -->
+        <div class="canvas-header-bar">
+          <div class="archetype-title-box">
+            <div class="archetype-title">
+              <span id="currentArchetypeTitle">Retropropagación y Gradiente Descendente (IA)</span>
+              <span class="badge-tag" id="currentArchetypeLevel">Nivel 2</span>
+            </div>
+            <span style="font-size: 0.75rem; color: var(--text-muted);" id="currentSubjectName">Materia: Redes Neuronales y Deep Learning</span>
+          </div>
+
+          <select class="archetype-select-dropdown" id="archetypeSelect">
+            <!-- Arquetipos cargados dinámicamente -->
+          </select>
+        </div>
+
+        <!-- Panel de Control Paramétrico (Modificación Numérica en Vivo) -->
+        <div class="param-controls-card">
+          <div class="param-card-header">
+            <div class="param-card-title">
+              <span>Modificar Parámetros Numéricos en Tiempo Real</span>
+            </div>
+            <span style="font-size: 0.72rem; color: var(--text-muted);">Sin IA · 100% Precisión Simbólica SymPy</span>
+          </div>
+
+          <div class="param-inputs-grid" id="paramInputsContainer"></div>
+
+          <div class="param-actions">
+            <button class="btn-action btn-primary" id="btnRecalculate">
+              <span>⚡ Recalcular Pasos</span>
+            </button>
+            <button class="btn-action btn-secondary" id="btnRandomize">
+              <span>🎲 Generar Nuevos Valores</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Fórmula General Evaluada -->
+        <div class="original-formula-banner">
+          <div>
+            <span class="formula-caption">Fórmula Evaluada</span>
+            <div class="formula-display" id="originalFormulaDisplay"></div>
+          </div>
+          <div id="solutionsSummaryBadge" style="text-align: right;"></div>
+        </div>
+
+        <!-- Desglose Paso a Paso Interactivo con Cajas Didácticas -->
+        <div class="steps-container" id="stepsContainer"></div>
+
+        <!-- Contexto en la Ingeniería Real -->
+        <div class="real-world-card" id="realWorldCard">
+          <div>
+            <strong class="real-world-heading">Aplicación Crítica en Ingeniería</strong>
+            <p class="real-world-text" id="realWorldText">Cargando contexto...</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ==============================================================
+           VISTA 3: ESTUDIO INTENSIVO 10 HORAS & POMODORO (DEEP WORK)
+           ============================================================== -->
+      <div class="view-panel" id="pomodoroLabView">
+        <div class="study-dashboard-grid">
+          
+          <!-- Tarjeta del Temporizador Pomodoro 50/10 -->
+          <div class="timer-card">
+            <div class="timer-card-header">
+              <span class="hero-badge">Deep Work · 10+ Horas Diarias</span>
+              <h3>Temporizador Pomodoro de Alta Concentración</h3>
+              <p class="timer-sub">Bloques de 50 minutos de estudio intensivo + 10 minutos de descanso.</p>
+            </div>
+
+            <!-- Display del Temporizador Circular -->
+            <div class="timer-circle-container">
+              <svg class="timer-svg" viewBox="0 0 200 200">
+                <circle class="timer-bg-circle" cx="100" cy="100" r="88" />
+                <circle class="timer-progress-circle" id="timerProgressCircle" cx="100" cy="100" r="88" />
+              </svg>
+              <div class="timer-display-box">
+                <div class="timer-time" id="timerTimeDisplay">50:00</div>
+                <div class="timer-mode-label" id="timerModeLabel">MODO ENFOQUE</div>
+              </div>
+            </div>
+
+            <div class="timer-controls">
+              <button class="btn-timer btn-primary-glow" id="btnTimerStart">▶ Iniciar Bloque</button>
+              <button class="btn-timer btn-secondary-timer" id="btnTimerPause">⏸ Pausar</button>
+              <button class="btn-timer btn-secondary-timer" id="btnTimerReset">↺ Reiniciar</button>
+            </div>
+
+            <div class="timer-presets-row">
+              <button class="timer-chip active" data-mins="50">50 min Enfoque</button>
+              <button class="timer-chip" data-mins="25">25 min Pomodoro Clásico</button>
+              <button class="timer-chip" data-mins="10">10 min Descanso</button>
+            </div>
+          </div>
+
+          <!-- Tarjeta de Progreso Diario hacia las 10 Horas -->
+          <div class="daily-progress-card">
+            <div class="progress-card-header">
+              <span class="card-tag">Persistencia en Supabase Cloud</span>
+              <h3>Progreso de Estudio Diario (Meta: 10 Horas)</h3>
+            </div>
+
+            <div class="stats-overview-box">
+              <div class="stat-item">
+                <span class="stat-number" id="statsHoursNumber">0.0</span>
+                <span class="stat-label">Horas Estudiadas Hoy</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-number" id="statsTargetNumber">10.0</span>
+                <span class="stat-label">Meta Diaria (Horas)</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-number" id="statsSessionsCount">0</span>
+                <span class="stat-label">Bloques Completados</span>
+              </div>
+            </div>
+
+            <!-- Barra de Progreso Visual -->
+            <div class="progress-bar-container">
+              <div class="progress-bar-fill" id="dailyProgressBar" style="width: 0%;"></div>
+            </div>
+            <div class="progress-labels">
+              <span id="progressPercentText">0.0% completado</span>
+              <span id="remainingMinutesText">600 min restantes</span>
+            </div>
+
+            <!-- Formulario Rápido de Registro de Sesión -->
+            <div class="log-session-form">
+              <h4>Registrar Bloque de Estudio en Supabase</h4>
+              <div class="form-row">
+                <select id="sessionAreaSelect" class="form-input">
+                  <option value="ai">Inteligencia Artificial</option>
+                  <option value="robotics">Robótica y Control</option>
+                  <option value="os">Sistemas Operativos</option>
+                  <option value="mechanics">Ingeniería Mecánica</option>
+                  <option value="math_foundations">Matemáticas & Baldor</option>
+                </select>
+                <input type="number" id="sessionMinutesInput" class="form-input" value="50" min="5" max="360" placeholder="Minutos" />
+              </div>
+              <input type="text" id="sessionTopicInput" class="form-input" placeholder="Tema estudiado (ej: Backprop en PyTorch, Paginación MMU)" />
+              <button class="btn-action btn-primary" id="btnLogSessionManual" style="margin-top: 10px; width: 100%;">
+                <span>💾 Registrar Sesión en Supabase Cloud</span>
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- Malla Curricular Instituto Superior Tecnológico Carlos Cisneros -->
+        <div class="curriculum-card">
+          <div class="curriculum-header">
+            <div>
+              <span class="hero-badge">Instituto Superior Tecnológico Carlos Cisneros</span>
+              <h3>Plan de Formación: Tecnología Superior en Inteligencia Artificial</h3>
+            </div>
+            <span class="student-badge-pill">Alumno: Darlyn David Tenelema Obando</span>
+          </div>
+
+          <div class="curriculum-grid" id="curriculumGrid">
+            <!-- Módulos cargados -->
+            <div class="curriculum-module active-mod">
+              <div class="module-code">IA-101</div>
+              <div class="module-title">Matemáticas Simbólicas & Álgebra Lineal</div>
+              <p class="module-desc">Baldor, cálculo multivariable, matrices, espacios vectoriales y SVD.</p>
+              <span class="module-status status-active">En Curso</span>
+            </div>
+            <div class="curriculum-module active-mod">
+              <div class="module-code">IA-102</div>
+              <div class="module-title">Fundamentos de Redes Neuronales & ML</div>
+              <p class="module-desc">Perceptrón, retropropagación, optimizadores (SGD/Adam) y PyTorch.</p>
+              <span class="module-status status-active">En Curso</span>
+            </div>
+            <div class="curriculum-module">
+              <div class="module-code">IA-103</div>
+              <div class="module-title">Sistemas Operativos & Cómputo Paralelo</div>
+              <p class="module-desc">Kernel Linux, gestión de memoria virtual, TLB, concurrencia y CUDA.</p>
+              <span class="module-status status-pending">Planificado</span>
+            </div>
+            <div class="curriculum-module">
+              <div class="module-code">IA-104</div>
+              <div class="module-title">Robótica, Cinemática & Visión Artificial</div>
+              <p class="module-desc">Matrices de transformación SE(3), parámetros DH y CNNs en visión.</p>
+              <span class="module-status status-pending">Planificado</span>
+            </div>
+            <div class="curriculum-module">
+              <div class="module-code">IA-105</div>
+              <div class="module-title">Mecánica Estructural & Dinámica</div>
+              <p class="module-desc">Esfuerzo, deformación, ley de Hooke y actuadores electromecánicos.</p>
+              <span class="module-status status-pending">Planificado</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ==============================================================
+           VISTA 4: ACTIVE RECALL & FLASHCARDS SM-2 (SUPABASE CLOUD)
+           ============================================================== -->
+      <div class="view-panel" id="flashcardsLabView">
+        <div class="flashcards-layout">
+          
+          <div class="flashcards-header-card">
+            <div>
+              <span class="hero-badge">Algoritmo SuperMemo SM-2 en Supabase Cloud</span>
+              <h2>Repetición Espaciada & Active Recall</h2>
+              <p class="flashcards-sub">Evalúa tu recuerdo activo para retener teoremas y demostraciones de ingeniería a largo plazo.</p>
+            </div>
+            <button class="btn-action btn-primary" id="btnOpenNewCardModal">
+              <span>+ Crear Flashcard</span>
+            </button>
+          </div>
+
+          <!-- Tarjeta de Estudio 3D Flip -->
+          <div class="flashcard-stage">
+            <div class="flashcard-3d" id="activeFlashcard">
+              <div class="card-face card-front">
+                <span class="card-hint">TOCA PARA VOLTEAR Y VER LA RESPUESTA</span>
+                <div class="card-content-box">
+                  <span class="card-subject-tag" id="fcSubjectTag">Inteligencia Artificial</span>
+                  <h3 class="card-question-text" id="fcQuestionText">¿Cómo se calcula el gradiente del peso en retropropagación?</h3>
+                  <div class="card-latex-box" id="fcLatexFront"></div>
+                </div>
+              </div>
+              <div class="card-face card-back">
+                <span class="card-hint">RESPUESTA Y DEMOSTRACIÓN TÉCNICA</span>
+                <div class="card-content-box">
+                  <div class="card-answer-text" id="fcAnswerText">
+                    Por la regla de la cadena multivariable: dL/dw = (dL/dy_pred) * (dy_pred/dz) * (dz/dw). Representa la tasa de variación instantánea del coste con respecto al peso.
+                  </div>
+                  <div class="card-latex-box" id="fcLatexBack"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Botones de Calificación SM-2 -->
+          <div class="sm2-rating-bar">
+            <span class="sm2-label">¿Qué tan bien recordaste este concepto?</span>
+            <div class="sm2-buttons-group">
+              <button class="sm2-btn btn-again" data-quality="1" title="Olvido total. Repetir hoy.">
+                <span>🔴 Olvidado (1)</span>
+              </button>
+              <button class="sm2-btn btn-hard" data-quality="3" title="Recordado con mucho esfuerzo.">
+                <span>🟡 Difícil (3)</span>
+              </button>
+              <button class="sm2-btn btn-good" data-quality="4" title="Respuesta correcta tras breve duda.">
+                <span>🟢 Bien (4)</span>
+              </button>
+              <button class="sm2-btn btn-easy" data-quality="5" title="Recuerdo perfecto e inmediato.">
+                <span>💎 Fácil (5)</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Lista de Tarjetas Guardadas en Supabase -->
+          <div class="saved-cards-section">
+            <h3>Tarjetas Registradas en Supabase Cloud (<span id="cardsCountBadge">0</span>)</h3>
+            <div class="cards-grid" id="savedCardsGrid"></div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ==============================================================
+           VISTA 5: HUB MCP & ESTADO CLOUD (MODEL CONTEXT PROTOCOL)
+           ============================================================== -->
+      <div class="view-panel" id="mcpLabView">
+        <div class="mcp-dashboard-container">
+          
+          <div class="mcp-hero-card">
+            <div class="hero-title-box">
+              <span class="hero-badge">Estándar Abierto MCP (Model Context Protocol)</span>
+              <h2>Servidor MCP de Aureon AI & Conectividad IDE</h2>
+            </div>
+            <p class="mcp-sub">
+              Aureon expone herramientas matemáticas analíticas SymPy, búsqueda vectorial pgvector y seguimiento de estudio
+              directamente para Cursor, Claude Desktop, Antigravity IDE o cualquier agente autónomo vía JSON-RPC 2.0.
+            </p>
+          </div>
+
+          <!-- Herramientas MCP Disponibles -->
+          <div class="mcp-tools-card">
+            <h3>Herramientas MCP Registradas (Tools)</h3>
+            <div class="mcp-tools-list" id="mcpToolsList"></div>
+          </div>
+
+          <!-- Probador Interactivo de Herramientas MCP -->
+          <div class="mcp-tester-card">
+            <h3>Probador Interactivo JSON-RPC</h3>
+            <div class="tester-input-row">
+              <select id="mcpToolSelect" class="form-input">
+                <option value="solve_equation_symbolic">solve_equation_symbolic</option>
+                <option value="query_engineering_knowledge">query_engineering_knowledge</option>
+                <option value="log_study_session_pomodoro">log_study_session_pomodoro</option>
+                <option value="create_study_flashcard">create_study_flashcard</option>
+                <option value="solve_parametric_archetype">solve_parametric_archetype</option>
+              </select>
+              <button class="btn-action btn-primary" id="btnExecuteMcp">
+                <span>⚡ Ejecutar Herramienta</span>
+              </button>
+            </div>
+            <textarea id="mcpToolArgs" class="code-textarea" rows="4">{"equation": "diff(y(x), x, 2) + 4*y(x) = sin(x)", "university_lens": "stanford"}</textarea>
+            
+            <div class="tester-output-box">
+              <span class="code-output-label">Respuesta del Servidor MCP:</span>
+              <pre id="mcpOutputPre">Esperando ejecución...</pre>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </section>
+
+    <!-- CANVAS 2: Canvas de Explicación y Teoría (Derecho / Delgado / Tutor Socrático) -->
+    <aside class="tutor-canvas" id="tutorCanvas">
+      
+      <!-- Cabecera del Tutor Socrático -->
+      <div class="tutor-header">
+        <div class="tutor-profile">
+          <div class="tutor-avatar" id="tutorAvatar">A</div>
+          <div class="tutor-info">
+            <div class="tutor-name-row">
+              <h3>Aureon Tutor</h3>
+              <span class="ai-badge">Gemini 3.1</span>
+            </div>
+            <p id="tutorStatus">Instructor Socrático Universitario</p>
+          </div>
+        </div>
+
+        <button class="tts-speaker-btn" id="btnToggleSpeech" title="Activar/Desactivar lectura en voz alta (TTS)">
+          🔊
+        </button>
+      </div>
+
+      <!-- Barra de Foco Activo y Contexto Sincronizado -->
+      <div class="active-context-bar" id="activeContextBar">
+        <span class="context-label">Foco activo:</span>
+        <span class="context-tag" id="activeContextTag">Paso 1: Identificación</span>
+      </div>
+
+      <!-- Botones de Acción Rápida del Boceto Didáctico -->
+      <div class="sketch-prompts-container">
+        <div class="sketch-prompts-title">Preguntas del Boceto Didáctico:</div>
+        
+        <button class="sketch-prompt-btn" data-type="source_of_number" id="btnPromptSource">
+          <span class="prompt-icon">🔍</span>
+          <span class="prompt-label">Explícame de dónde sale este número</span>
+        </button>
+        
+        <button class="sketch-prompt-btn" data-type="process_name" id="btnPromptProcess">
+          <span class="prompt-icon">🏷️</span>
+          <span class="prompt-label">¿Qué proceso se usa aquí y cómo se llama?</span>
+        </button>
+        
+        <button class="sketch-prompt-btn" data-type="step_by_step" id="btnPromptStepByStep">
+          <span class="prompt-icon">📋</span>
+          <span class="prompt-label">Enséñame paso a paso cómo resolver este ejercicio</span>
+        </button>
+        
+        <button class="sketch-prompt-btn" data-type="real_world_use" id="btnPromptRealWorld">
+          <span class="prompt-icon">🌐</span>
+          <span class="prompt-label">¿En qué situaciones voy a usarlos en ingeniería?</span>
+        </button>
+
+        <button class="sketch-prompt-btn prompt-feynman" data-type="feynman" id="btnPromptFeynman">
+          <span class="prompt-icon">💡</span>
+          <span class="prompt-label">Modo Feynman: Hazme una pregunta de examen</span>
+        </button>
+      </div>
+
+      <!-- Flujo de Mensajes y Explicaciones del Chat -->
+      <div class="chat-stream-container" id="chatStream">
+        <div class="chat-bubble tutor">
+          <h4>¡Bienvenido, Darlyn David!</h4>
+          <p>Estoy conectado en tiempo real a tu <strong>Canvas de Estudio</strong>, sincronizado con <strong>Supabase Cloud</strong> y equipado con la pedagogía de Harvard, Stanford, MGU Moscú y Tsinghua.</p>
+          <p style="margin-top: 8px; font-size: 0.85rem; color: var(--text-secondary);">
+            Acompañaré tus 10+ horas de estudio diario en Inteligencia Artificial, Robótica, Sistemas Operativos, Mecánica y Matemáticas.
+          </p>
+        </div>
+      </div>
+
+      <!-- Barra de Entrada de Preguntas Interactiva -->
+      <div class="chat-input-bar">
+        <input 
+          type="text" 
+          class="chat-input" 
+          id="chatInput" 
+          placeholder="Pregúntame algo sobre este paso o concepto..." 
+        />
+        <button class="btn-send" id="btnSendQuestion" title="Enviar pregunta al tutor">
+          ➤
+        </button>
+      </div>
+
+    </aside>
+
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

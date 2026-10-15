@@ -1,0 +1,43 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Environments & Credentials (NUNCA SUBIR A GITHUB)
+.env
+.env.local
+.env.*.local
+venv/
+.venv/
+env/
+ENV/
+node_modules/
+
+# Google Cloud Service Account Keys & Secrets
+glassy-*.json
+service_account.json
+credentials.json
+*.pem
+*.key
+
+# Database files & local storage
+data/*.db
+data/*.sqlite
+data/*.sqlite3
+*.db-journal
+
+# IDE & Editor files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+.DS_Store
+Thumbs.db
+
+# Logs & temporary files
+*.log
+scratch/
+tmp/
+.cache/
+.pytest_cache/
